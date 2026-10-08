@@ -1,0 +1,5 @@
+method,full_dependency,positive_region,equivalence_classes,collapsed_1bin_features,collapsed_feature_names,strict_reduct_size,strict_reduction_pct,approx_reduct_size,approx_reduction_pct,strict_reduct
+q3,0.32242769084874345,680,408,0,,17,19.047619047619047,12,42.85714285714286,loc|ev(g)|iv(g)|l|d|i|e|b|lOCode|lOComment|lOBlank|locCodeAndComment|uniq_Op|uniq_Opnd|total_Op|total_Opnd|branchCount
+q5,0.7131341868183974,1504,757,0,,18,14.28571428571429,11,47.61904761904761,loc|ev(g)|iv(g)|n|l|d|i|e|b|lOCode|lOComment|lOBlank|locCodeAndComment|uniq_Op|uniq_Opnd|total_Op|total_Opnd|branchCount
+q8,0.7913703176861071,1669,972,0,,15,28.57142857142857,9,57.14285714285714,loc|ev(g)|iv(g)|l|d|i|b|lOCode|lOComment|lOBlank|locCodeAndComment|uniq_Op|uniq_Opnd|total_Op|branchCount
+mdlp,0.2972972972972973,627,420,1,locCodeAndComment,19,9.523809523809524,14,33.333333333333336,loc|v(g)|ev(g)|iv(g)|n|v|l|d|i|e|b|lOCode|lOComment|lOBlank|uniq_Op|uniq_Opnd|total_Op|total_Opnd|branchCount

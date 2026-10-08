@@ -1,0 +1,329 @@
+{
+  "discretization": "3-bin equal-frequency (descriptive, whole dataset)",
+  "actual_bins": {
+    "loc": 3,
+    "v(g)": 3,
+    "ev(g)": 2,
+    "iv(g)": 3,
+    "n": 3,
+    "v": 3,
+    "l": 3,
+    "d": 3,
+    "i": 3,
+    "e": 3,
+    "b": 3,
+    "t": 3,
+    "lOCode": 3,
+    "lOComment": 2,
+    "lOBlank": 3,
+    "locCodeAndComment": 2,
+    "uniq_Op": 3,
+    "uniq_Opnd": 3,
+    "total_Op": 3,
+    "total_Opnd": 3,
+    "branchCount": 3
+  },
+  "full_dependency": 0.32242769084874345,
+  "positive_region_size": 680,
+  "universe_size": 2109,
+  "equivalence_class_count": 408,
+  "inconsistent_equivalence_class_count": 62,
+  "defects_true_approximation": {
+    "target_size": 326,
+    "lower": 79,
+    "upper": 1508,
+    "boundary": 1429
+  },
+  "quickreduct_forward": [
+    "loc",
+    "lOCode",
+    "total_Opnd",
+    "branchCount",
+    "lOBlank",
+    "total_Op",
+    "lOComment",
+    "d",
+    "uniq_Op",
+    "i",
+    "uniq_Opnd",
+    "iv(g)",
+    "e",
+    "b",
+    "locCodeAndComment",
+    "ev(g)",
+    "l"
+  ],
+  "quickreduct_forward_steps": [
+    {
+      "iteration": 1,
+      "chosen_feature": "loc",
+      "dependency_before": 0.0,
+      "dependency_after": 0.0,
+      "significance_gain": 0.0
+    },
+    {
+      "iteration": 2,
+      "chosen_feature": "lOCode",
+      "dependency_before": 0.0,
+      "dependency_after": 0.039355144618302515,
+      "significance_gain": 0.039355144618302515
+    },
+    {
+      "iteration": 3,
+      "chosen_feature": "total_Opnd",
+      "dependency_before": 0.039355144618302515,
+      "dependency_after": 0.07349454717875771,
+      "significance_gain": 0.034139402560455195
+    },
+    {
+      "iteration": 4,
+      "chosen_feature": "branchCount",
+      "dependency_before": 0.07349454717875771,
+      "dependency_after": 0.09388335704125178,
+      "significance_gain": 0.02038880986249407
+    },
+    {
+      "iteration": 5,
+      "chosen_feature": "lOBlank",
+      "dependency_before": 0.09388335704125178,
+      "dependency_after": 0.11284969179706021,
+      "significance_gain": 0.01896633475580843
+    },
+    {
+      "iteration": 6,
+      "chosen_feature": "total_Op",
+      "dependency_before": 0.11284969179706021,
+      "dependency_after": 0.1427216690374585,
+      "significance_gain": 0.029871977240398292
+    },
+    {
+      "iteration": 7,
+      "chosen_feature": "lOComment",
+      "dependency_before": 0.1427216690374585,
+      "dependency_after": 0.17401612138454245,
+      "significance_gain": 0.031294452347083945
+    },
+    {
+      "iteration": 8,
+      "chosen_feature": "d",
+      "dependency_before": 0.17401612138454245,
+      "dependency_after": 0.2024656235182551,
+      "significance_gain": 0.02844950213371264
+    },
+    {
+      "iteration": 9,
+      "chosen_feature": "uniq_Op",
+      "dependency_before": 0.2024656235182551,
+      "dependency_after": 0.2238027501185396,
+      "significance_gain": 0.0213371266002845
+    },
+    {
+      "iteration": 10,
+      "chosen_feature": "i",
+      "dependency_before": 0.2238027501185396,
+      "dependency_after": 0.24276908487434803,
+      "significance_gain": 0.018966334755808445
+    },
+    {
+      "iteration": 11,
+      "chosen_feature": "uniq_Opnd",
+      "dependency_before": 0.24276908487434803,
+      "dependency_after": 0.2626837363679469,
+      "significance_gain": 0.01991465149359886
+    },
+    {
+      "iteration": 12,
+      "chosen_feature": "iv(g)",
+      "dependency_before": 0.2626837363679469,
+      "dependency_after": 0.27643432906590804,
+      "significance_gain": 0.01375059269796114
+    },
+    {
+      "iteration": 13,
+      "chosen_feature": "e",
+      "dependency_before": 0.27643432906590804,
+      "dependency_after": 0.28923660502607873,
+      "significance_gain": 0.012802275960170695
+    },
+    {
+      "iteration": 14,
+      "chosen_feature": "b",
+      "dependency_before": 0.28923660502607873,
+      "dependency_after": 0.29919393077287815,
+      "significance_gain": 0.009957325746799417
+    },
+    {
+      "iteration": 15,
+      "chosen_feature": "locCodeAndComment",
+      "dependency_before": 0.29919393077287815,
+      "dependency_after": 0.3082029397818872,
+      "significance_gain": 0.009009009009009028
+    },
+    {
+      "iteration": 16,
+      "chosen_feature": "ev(g)",
+      "dependency_before": 0.3082029397818872,
+      "dependency_after": 0.31626363205310576,
+      "significance_gain": 0.008060692271218584
+    },
+    {
+      "iteration": 17,
+      "chosen_feature": "l",
+      "dependency_before": 0.31626363205310576,
+      "dependency_after": 0.32242769084874345,
+      "significance_gain": 0.006164058795637695
+    }
+  ],
+  "quickreduct_backward_removed": [],
+  "quickreduct_pruned": [
+    "loc",
+    "ev(g)",
+    "iv(g)",
+    "l",
+    "d",
+    "i",
+    "e",
+    "b",
+    "lOCode",
+    "lOComment",
+    "lOBlank",
+    "locCodeAndComment",
+    "uniq_Op",
+    "uniq_Opnd",
+    "total_Op",
+    "total_Opnd",
+    "branchCount"
+  ],
+  "quickreduct_pruned_size": 17,
+  "quickreduct_pruned_gamma": 0.32242769084874345,
+  "exhaustive": {
+    "subsets_searched": 2097152,
+    "seconds": 143.1,
+    "n_strict_reducts": 2,
+    "strict_reduct_size_distribution": {
+      "17": 2
+    },
+    "min_reduct_size": 17,
+    "n_minimum_reducts": 2,
+    "minimum_reducts": [
+      [
+        "loc",
+        "ev(g)",
+        "iv(g)",
+        "l",
+        "d",
+        "i",
+        "e",
+        "b",
+        "lOCode",
+        "lOComment",
+        "lOBlank",
+        "locCodeAndComment",
+        "uniq_Op",
+        "uniq_Opnd",
+        "total_Op",
+        "total_Opnd",
+        "branchCount"
+      ],
+      [
+        "loc",
+        "ev(g)",
+        "iv(g)",
+        "l",
+        "d",
+        "i",
+        "b",
+        "t",
+        "lOCode",
+        "lOComment",
+        "lOBlank",
+        "locCodeAndComment",
+        "uniq_Op",
+        "uniq_Opnd",
+        "total_Op",
+        "total_Opnd",
+        "branchCount"
+      ]
+    ],
+    "formal_core_intersection_of_minimum_reducts": [
+      "loc",
+      "ev(g)",
+      "iv(g)",
+      "l",
+      "d",
+      "i",
+      "b",
+      "lOCode",
+      "lOComment",
+      "lOBlank",
+      "locCodeAndComment",
+      "uniq_Op",
+      "uniq_Opnd",
+      "total_Op",
+      "total_Opnd",
+      "branchCount"
+    ],
+    "intersection_of_all_strict_reducts": [
+      "loc",
+      "ev(g)",
+      "iv(g)",
+      "l",
+      "d",
+      "i",
+      "b",
+      "lOCode",
+      "lOComment",
+      "lOBlank",
+      "locCodeAndComment",
+      "uniq_Op",
+      "uniq_Opnd",
+      "total_Op",
+      "total_Opnd",
+      "branchCount"
+    ],
+    "all_strict_reducts": [
+      [
+        "loc",
+        "ev(g)",
+        "iv(g)",
+        "l",
+        "d",
+        "i",
+        "e",
+        "b",
+        "lOCode",
+        "lOComment",
+        "lOBlank",
+        "locCodeAndComment",
+        "uniq_Op",
+        "uniq_Opnd",
+        "total_Op",
+        "total_Opnd",
+        "branchCount"
+      ],
+      [
+        "loc",
+        "ev(g)",
+        "iv(g)",
+        "l",
+        "d",
+        "i",
+        "b",
+        "t",
+        "lOCode",
+        "lOComment",
+        "lOBlank",
+        "locCodeAndComment",
+        "uniq_Op",
+        "uniq_Opnd",
+        "total_Op",
+        "total_Opnd",
+        "branchCount"
+      ]
+    ],
+    "strict_reducts_verified_preserve_gamma": true
+  },
+  "quickreduct_is_strict_reduct": true,
+  "quickreduct_matches_a_minimum_reduct": true,
+  "quickreduct_size_minus_minimum_size": 0
+}
