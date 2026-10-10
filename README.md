@@ -1,273 +1,97 @@
-# Granular Computing Project — Official Unified Team Package
+# Rough Set Feature Reduction for Software Defect Prediction
 
-## Project
+**Can rough set theory remove software metrics without hurting defect prediction?**
+A leakage-safe study on the NASA KC1 dataset, with exhaustive reduct search, random-subset controls and paired significance tests.
 
-**Rough Set-Based Feature Reduction for Software Defect Prediction**
+Course project, *Granular Computing*, Sichuan University (2026).
+Team: Achraf Ait Tayeb, Maryam Mafoud, Ouassim Lahraoui.
 
-Team:
-- Achraf Ait Tayeb
-- Maryam Mafoud
-- Ouassim Lahraoui
-
-Course: Granular Computing, Sichuan University
+![Baseline vs approximate reduct vs same-size random subsets](results/plots/metrics_baseline_vs_approx_vs_random.png)
 
 ---
 
-## Important
+## Summary
 
-This folder contains the **official unified version of the project**.
+- A **strict rough set reduct** drops about **19%** of the 21 metrics (16.9 kept on average) with **no measurable change** in prediction (all paired Wilcoxon p > 0.5).
+- An **approximate reduct** (α = 0.90) drops about **41%** (12.3 kept) and is slightly better than the full baseline on F1 (+0.023, p = 0.036) and ROC-AUC (+0.015, p = 0.032).
+- **Same-size random subsets do about as well as the strict reduct.** So the honest conclusion is that rough sets compress the metric set well, not that they pick better features than chance. The approximate reduct beats random subsets on ROC-AUC only (p < 0.001).
+- An **exhaustive search over all 2²¹ = 2,097,152 subsets** shows there are exactly two minimum strict reducts (17 features each), and the QuickReduct heuristic found one of them.
 
-Earlier experiments carried out separately by team members used different settings and should be treated as developmental work.
+## Research question
 
-If an older result conflicts with the files in this package, use the results in this package.
+KC1 describes 2,109 software modules with 21 static code metrics (lines of code, McCabe and Halstead measures). Many of these metrics are strongly related. We ask:
 
-Do not mix old experimental numbers with the official unified results.
+1. How many metrics can a rough set reduct remove while keeping the dependency of the defect label on the metrics?
+2. Does a model trained on the reduced set predict defects as well as one trained on all 21?
+3. Is any benefit due to rough set selection itself, or would removing the same number of random metrics do just as well?
 
----
+## Method
 
-## Dataset
+| Step | Choice |
+|---|---|
+| Data | PROMISE / NASA KC1, 2,109 modules, 21 metrics, 326 defective (15.5%). No missing values. Duplicate rows and conflicting labels are kept and reported, not removed. |
+| Granulation | 3-bin equal-frequency discretization (Low / Medium / High). 5-bin, 8-bin and MDLP as sensitivity checks. |
+| Feature selection | Dependency-based QuickReduct with backward pruning. **Strict** reduct keeps full dependency γ; **approximate** reduct keeps ≥ 90% of it. |
+| Evaluation | Repeated stratified 10-fold cross-validation, 5 repeats (50 test folds), seed 42. |
+| Classifier | `DecisionTreeClassifier(random_state=42)`, no resampling, no class weights, no tuning, so differences come from the features only. |
+| Controls | For every fold, 10 random subsets of the same size as the rough set subset. |
+| Statistics | Paired Wilcoxon signed-rank tests over the same 50 folds. |
 
-Dataset:
+**No test-data leakage.** Inside every fold, discretization bins and reducts are fitted on the training part only. The selected metric names are then applied to the original numeric data, and the model is scored on the untouched test fold. The full-dataset exhaustive search is descriptive and never feeds into a test fold.
 
-`data/raw/kc1.csv`
+## Results
 
-PROMISE / NASA KC1, 2,109-instance version.
+Mean over 50 test folds (positive class = defective).
 
-- 2,109 software modules
-- 21 condition attributes
-- target: `defects`
-- 1,783 non-defective
-- 326 defective
-- no missing values
+| Feature set | Features | F1 | MCC | ROC-AUC | PR-AUC |
+|---|---|---|---|---|---|
+| Baseline | 21 | 0.393 | 0.294 | 0.617 | 0.266 |
+| Strict reduct | 16.9 | 0.396 | 0.296 | 0.619 | 0.268 |
+| Random, strict size | 16.9 | 0.399 | 0.300 | 0.615 | 0.269 |
+| Approximate reduct (α = 0.9) | 12.3 | **0.416** | **0.316** | **0.632** | **0.278** |
+| Random, approximate size | 12.3 | 0.401 | 0.302 | 0.605 | 0.271 |
 
-The exact dataset contains duplicate observations and some identical feature vectors with conflicting defect labels. These observations are intentionally retained.
+Full table with standard deviations, accuracy, precision and recall: [`results/final_summary.txt`](results/final_summary.txt). All significance tests: [`results/statistical_tests.csv`](results/statistical_tests.csv).
 
----
+**Full-dataset rough set analysis (3 bins):** dependency γ = 0.322 (680 of 2,109 modules in the positive region), 408 granules. The two minimum reducts differ only by Halstead effort `e` versus time `t`, which are almost the same quantity (t = e / 18). Their 16-feature intersection is the core of this decision table.
 
-## Official Primary Method
+## Limitations
 
-The primary Rough Set setup uses:
+- One dataset, one classifier. Results may differ on other PROMISE datasets or with other models.
+- The defect class is small (15.5%), so absolute F1 and PR-AUC are low for every feature set.
+- Equal-frequency binning is a modelling choice; the sensitivity runs in `results/discretization_sensitivity_*.csv` show how results move with it.
+- No correction for multiple comparisons; the approximate-reduct p-values near 0.03 should be read as suggestive.
 
-- 3-bin equal-frequency discretization
-- Low / Medium / High information granules
-- dependency-based QuickReduct
-- backward pruning
-- strict reduct preserving full dependency
+## Validation
 
-Secondary analysis:
+47 automated tests cover the rough set calculations, discretization, strict and approximate reduct guarantees, exhaustive-search correctness, train/test separation, leakage checks and output validity. The main run also checks itself and records the result at the top of `results/final_summary.txt` (for example, no train/test overlap in any fold).
 
-- approximate reduct with alpha = 0.90
-- random same-size controls
-- 5-bin, 8-bin and MDLP discretization sensitivity
-
----
-
-## Predictive Evaluation
-
-Official evaluation:
-
-- Repeated Stratified 10-Fold Cross-Validation
-- 5 repeats
-- 50 total test evaluations
-- random state = 42
-
-Within every split:
-
-1. Split training and test data.
-2. Fit discretization using training data only.
-3. Perform Rough Set feature selection using training data only.
-4. Apply the selected feature names to the original numerical data.
-5. Train a Decision Tree.
-6. Evaluate on the untouched test fold.
-
-This design prevents test-data leakage.
-
-Classifier:
-
-`DecisionTreeClassifier(random_state=42, class_weight=None)`
-
-The main experiment does not use:
-
-- SMOTE
-- oversampling
-- undersampling
-- class weighting
-- hyperparameter tuning
-
----
-
-## Official Results
-
-### Baseline
-
-21 features
-
-Mean performance over 50 splits:
-
-- Accuracy: 0.823
-- F1: 0.393
-- MCC: 0.294
-- ROC-AUC: 0.617
-- PR-AUC: 0.266
-
-### Strict Rough Set Reduct
-
-Average features: **16.94**
-
-Average reduction: **19.3%**
-
-- Accuracy: 0.822
-- F1: 0.396
-- MCC: 0.296
-- ROC-AUC: 0.619
-- PR-AUC: 0.268
-
-Interpretation:
-
-The strict reduct removes about 19% of the software metrics while predictive performance remains essentially unchanged.
-
-### Approximate Rough Set Reduct
-
-alpha = 0.90
-
-Average features: **12.32**
-
-Average reduction: **41.3%**
-
-- Accuracy: 0.825
-- F1: 0.416
-- MCC: 0.316
-- ROC-AUC: 0.632
-- PR-AUC: 0.278
-
-Interpretation:
-
-The approximate reduct provides substantially stronger compression while remaining competitive in the preliminary predictive evaluation.
-
-Do not claim that Rough Sets universally improve prediction.
-
----
-
-## Exact Full-Dataset Rough Set Analysis
-
-Using the primary 3-bin representation:
-
-- dependency gamma = 0.3224
-- positive region = 680 / 2109
-- 408 equivalence classes / granules
-
-All:
-
-`2^21 = 2,097,152`
-
-feature subsets were examined.
-
-Results:
-
-- exactly 2 strict minimum reducts
-- both contain 17 features
-- they differ only by `e` versus `t`
-- their intersection contains 16 features
-- this 16-feature intersection is the formal core for this decision table
-- QuickReduct found one of the exact minimum reducts
-
-The exhaustive full-dataset analysis is descriptive and is not used to leak information into predictive test folds.
-
----
-
-## Random Controls
-
-For each cross-validation split, 10 random subsets containing the same number of features as the Rough Set subset are evaluated.
-
-The strict Rough Set subset and same-size random subsets perform similarly.
-
-Therefore we do **not** claim that strict Rough Set selection is predictively superior to random feature removal.
-
----
-
-## Automated Validation
-
-The unified implementation passed:
-
-**47 automated tests**
-
-Tests include:
-
-- Rough Set calculations
-- discretization
-- cross-validation
-- strict dependency preservation
-- approximate reduct threshold
-- exhaustive-search correctness
-- train/test separation
-- leakage checks
-- random-control feature counts
-- output validity
-
----
-
-## Important Files
-
-### Main experiment
-
-`src/run_final_unified_experiment.py`
-
-### Unified methodology
-
-`src/unified_protocol.py`
-
-### Rough Set functions
-
-`src/rough_sets.py`
-
-### Discretization
-
-`src/discretization.py`
-
-### Dataset audit
-
-`src/audit_kc1.py`
-
-### Tests
-
-`tests/`
-
-### Official results
-
-`results/`
-
-The most useful summary is:
-
-`results/final_summary.txt`
-
----
-
-## How to Run
-
-Create and activate a virtual environment if needed:
+## Run it
 
 ```bash
 python3 -m venv .venv
 source .venv/bin/activate        # Windows: .venv\Scripts\activate
 pip install -r requirements.txt
+
+python -m pytest                                  # 47 tests, a few seconds
+python src/run_final_unified_experiment.py        # full study, about 5 minutes
 ```
 
-Run the tests:
+Results are written to `results/final/`. Add `--skip-exhaustive` to skip the 2²¹ subset search.
 
-```bash
-python -m pytest
+## Repository layout
+
+```
+src/rough_sets.py                     rough set core: decision table, dependency, QuickReduct, exhaustive search
+src/discretization.py                 equal-frequency and MDLP binning
+src/unified_protocol.py               the leakage-safe per-fold pipeline
+src/run_final_unified_experiment.py   the main experiment
+src/audit_kc1.py                      dataset audit (duplicates, conflicting labels)
+tests/                                pytest suite
+results/                              outputs from the reported run, with plots in results/plots/
+data/raw/kc1.csv                      the dataset
 ```
 
-Run the full experiment (about 5 minutes; results are written to `results/final/`):
+## Dataset
 
-```bash
-python src/run_final_unified_experiment.py
-```
-
----
-
-## Credits
-
-Team: Achraf Ait Tayeb, Ouassim Lahraoui, Maryam Mafoud (Sichuan University, Granular Computing course).
-
-Dataset: PROMISE / NASA KC1 (public). These are early project-proposal results, not final results.
+NASA Metrics Data Program, KC1, as distributed in the PROMISE Software Engineering Repository (Sayyad Shirabad, J. and Menzies, T. J., 2005, School of Information Technology and Engineering, University of Ottawa).
